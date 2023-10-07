@@ -1,13 +1,17 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var cors = require('cors')
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 var indexRouter = require('./routes/index');
 var usersProduct = require('./routes/product');
 var loginRouter = require('./routes/login')
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,9 +23,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 console.log("***** check");
+
 app.use('/', indexRouter);
-app.use('/product',usersProduct);
-app.use('/login',loginRouter)
+app.use('/product', usersProduct);
+app.use('/login', loginRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
